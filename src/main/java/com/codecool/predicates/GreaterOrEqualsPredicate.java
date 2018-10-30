@@ -2,12 +2,12 @@ package com.codecool.predicates;
 
 import java.util.function.Predicate;
 
-public class LessPredicate implements Predicate<String> {
+public class GreaterOrEqualsPredicate implements Predicate<String> {
 
     private int columnNumber;
     private String expectedValue;
 
-    public LessPredicate(int columnNumber, String expectedValue) {
+    public GreaterOrEqualsPredicate(int columnNumber, String expectedValue) {
         this.columnNumber = columnNumber;
         this.expectedValue = expectedValue;
     }
@@ -17,10 +17,10 @@ public class LessPredicate implements Predicate<String> {
         String[] elements = s.split("\\s*,\\s*");
         String value = elements[columnNumber].trim();
         try {
-            return Double.valueOf(value) < Double.valueOf(expectedValue);
+            return Double.valueOf(value) >= Double.valueOf(expectedValue);
         } catch (NumberFormatException e) {
             throw new NumberFormatException("Wrong value type for arithmetical comparision in " +
-                    value + " < " + expectedValue);
+                    value + " >= " + expectedValue);
         }
     }
 }
