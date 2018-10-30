@@ -20,7 +20,7 @@ public class LessPredicate implements Predicate<String> {
             return Double.valueOf(value) < Double.valueOf(expectedValue);
         } catch (NumberFormatException e) {
             throw new NumberFormatException("Wrong value type for arithmetical comparision in " +
-                    value + " > " + expectedValue);
+                    value + " < " + expectedValue);
         }
     }
 }
