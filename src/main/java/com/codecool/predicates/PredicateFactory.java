@@ -40,9 +40,13 @@ public class PredicateFactory
         }
     }
 
-    private Map<String, String> parseCondition(String conditions) {
+    private Map<String, String> parseCondition(String conditions) throws IncorrectQueryException {
         Map<String, String> conditionParameters = new HashMap<>();
         String[] elements = conditions.split(" ");
+        if(elements.length != 3) {
+            throw new IncorrectQueryException("Wrong query conditions: " + conditions);
+        }
+
         conditionParameters.put("left", elements[0]);
         conditionParameters.put("operation", elements[1]);
         conditionParameters.put("right", elements[2]);
