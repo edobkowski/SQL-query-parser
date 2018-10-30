@@ -45,4 +45,8 @@ public enum OperandEnum {
             default: throw new IncorrectOperandException("Incorrect operand exception");
         }
     }
+
+    public String getValue() {
+        return value;
+    }
 }
