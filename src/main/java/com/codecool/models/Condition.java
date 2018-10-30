@@ -6,12 +6,12 @@ import com.codecool.helpers.OperandEnum;
 public class Condition {
 
     private String left;
-    private OperandEnum operand;
+    private OperandEnum operator;
     private String right;
 
-    public Condition(String left, String operand, String right) throws IncorrectOperandException {
+    public Condition(String left, String operator, String right) throws IncorrectOperandException {
         this.left = left;
-        this.operand = OperandEnum.getType(operand);
+        this.operator = OperandEnum.getType(operator);
         this.right = right;
     }
 
@@ -19,8 +19,8 @@ public class Condition {
         return left;
     }
 
-    public OperandEnum getOperand() {
-        return operand;
+    public OperandEnum getOperator() {
+        return operator;
     }
 
     public String getRight() {
