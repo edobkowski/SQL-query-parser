@@ -2,21 +2,17 @@ package com.codecool.predicates;
 
 
 import com.codecool.exceptions.IncorrectQueryException;
-import com.codecool.predicates.EqualsPredicate;
-import com.codecool.predicates.GreaterPredicate;
-import com.codecool.predicates.LessPredicate;
+import com.codecool.models.Condition;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
-/**
- * Hello world!
- *
- */
 public class PredicateFactory
 {
-
     private Map<String, Integer> columns = new HashMap<>();
 
     PredicateFactory(String header) {
@@ -27,30 +23,45 @@ public class PredicateFactory
             this.columns.put(column, i++);
         }
     }
-    public Predicate<String> getPredicate(String conditions) throws IncorrectQueryException {
-        Map<String, String> conditionParameters = parseCondition(conditions);
-        int columnNumber = this.columns.get(conditionParameters.get("left"));
-        String expectedValue = conditionParameters.get("right");
+    public Predicate<String> getPredicate(List<List<Condition>> conditions) throws IncorrectQueryException {
 
-        switch (conditionParameters.get("operation")) {
-            case "=": return new EqualsPredicate(columnNumber, expectedValue);
-            case ">": return new GreaterPredicate(columnNumber, expectedValue);
-            case "<": return new LessPredicate(columnNumber, expectedValue);
-            default: throw new IncorrectQueryException("Incorrect logical operator");
+        List<Predicate<String>> orConditions = new ArrayList<>();
+
+        for(List<Condition> conditionList : conditions) {
+            orConditions.add(chainPredicatesWithAnd(conditionList.stream()
+                    .map(condition -> getPredicateForCondition(condition))
+                    .collect(Collectors.toList())));
         }
+
+        return chainPredicatesWithOr(orConditions);
     }
 
-    private Map<String, String> parseCondition(String conditions) throws IncorrectQueryException {
-        Map<String, String> conditionParameters = new HashMap<>();
-        String[] elements = conditions.split(" ");
-        if(elements.length != 3) {
-            throw new IncorrectQueryException("Wrong query conditions: " + conditions);
+    private Predicate<String> chainPredicatesWithAnd (List<Predicate<String>> predicates) {
+        Predicate<String> root = predicates.get(0);
+        predicates.remove(0);
+        return predicates.stream()
+                .reduce(root, (p1, p2) -> p1.and(p2));
+    }
+
+    private Predicate<String> chainPredicatesWithOr (List<Predicate<String>> predicates) {
+        Predicate<String> root = predicates.get(0);
+        predicates.remove(0);
+        return predicates.stream()
+                .reduce(root, (p1, p2) -> p1.or(p2));
+    }
+
+    private Predicate<String> getPredicateForCondition(Condition condition) {
+        String leftOperand = condition.getLeft();
+        String rightOperand = condition.getRight();
+        int columnNumber = this.columns.get(leftOperand);
+        switch (condition.getOperator()) {
+            case EQUALS: return new EqualsPredicate(columnNumber, rightOperand);
+            case NOT_EQUAL: return new NotEqualsPredicate(columnNumber, rightOperand);
+            case GREATER_THAN: return new GreaterPredicate(columnNumber, rightOperand);
+            case LESS_THEN: return new LessPredicate(columnNumber, rightOperand);
+            case GREATER_OR_EQUALS: return new GreaterOrEqualsPredicate(columnNumber, rightOperand);
+            case LESS_OR_EQUALS: return new LessOrEqualsPredicate(columnNumber, rightOperand);
+            default: return null;
         }
-
-        conditionParameters.put("left", elements[0]);
-        conditionParameters.put("operation", elements[1]);
-        conditionParameters.put("right", elements[2]);
-
-        return conditionParameters;
     }
 }
