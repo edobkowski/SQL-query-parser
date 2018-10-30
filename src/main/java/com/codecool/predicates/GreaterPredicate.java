@@ -1,7 +1,5 @@
 package com.codecool.predicates;
 
-import com.codecool.exceptions.IncorrectQueryException;
-
 import java.util.function.Predicate;
 
 public class GreaterPredicate implements Predicate<String> {
@@ -21,7 +19,8 @@ public class GreaterPredicate implements Predicate<String> {
         try {
             return Double.valueOf(value) > Double.valueOf(expectedValue);
         } catch (NumberFormatException e) {
-            throw new NumberFormatException("Wrong value type for arithmetical ");
+            throw new NumberFormatException("Wrong value type for arithmetical comparision in " +
+                    value + " > " + expectedValue);
         }
     }
 }
