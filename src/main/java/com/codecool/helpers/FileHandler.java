@@ -22,7 +22,7 @@ public class FileHandler {
 
     public Stream<String> getDataStream(String fileName) throws FileHandlerException {
         try {
-            return Files.lines(Paths.get(fileName));
+            return Files.lines(Paths.get(fileName)).skip(1);
         }
         catch (IOException e) {
             throw new FileHandlerException("Cannot read file " + fileName);
