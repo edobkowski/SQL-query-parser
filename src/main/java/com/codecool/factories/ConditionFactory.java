@@ -70,8 +70,7 @@ public class ConditionFactory {
 
     private List<String> getSplitByOrWrapper(String condition) {
         List<String> result = new ArrayList<>();
-        List<String> list;
-        list = splitByOr(condition);
+        List<String> list = splitByOr(condition);
 
         while (list.size() > 1) {
             result.add(list.get(1));
