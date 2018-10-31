@@ -1,17 +1,17 @@
 package com.codecool.models;
 
 import com.codecool.exceptions.IncorrectOperandException;
-import com.codecool.helpers.OperandEnum;
+import com.codecool.helpers.enums.OperandType;
 
 public class Condition {
 
     private String left;
-    private OperandEnum operator;
+    private OperandType operator;
     private String right;
 
     public Condition(String left, String operator, String right) throws IncorrectOperandException {
         this.left = left;
-        this.operator = OperandEnum.getType(operator);
+        this.operator = OperandType.getType(operator);
         this.right = right;
     }
 
@@ -19,7 +19,7 @@ public class Condition {
         return left;
     }
 
-    public OperandEnum getOperator() {
+    public OperandType getOperator() {
         return operator;
     }
 
@@ -29,6 +29,6 @@ public class Condition {
 
     @Override
     public String toString() {
-        return left + " " + operator + " " + right;
+        return left + " " + operator.getValue() + " " + right;
     }
 }
