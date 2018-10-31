@@ -3,10 +3,7 @@ package com.codecool.factories;
 import com.codecool.exceptions.IncorrectOperandException;
 import com.codecool.models.Condition;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
@@ -17,7 +14,7 @@ public class ConditionFactory {
 
     private List<String> splitByOr(String condition) {
         List<String> list = new ArrayList<>();
-        String patternString = "([\\w <>='%]+)([^']OR[^']|[^']or[^'])([\\w <>='%]+)";
+        String patternString = "([\\w <>='%]+)([^']OR[^']|[^']or[^'])([\\w <>='%]+;?)";
         Pattern pattern = Pattern.compile(patternString);
 
         Matcher matcher = pattern.matcher(condition);
@@ -72,15 +69,17 @@ public class ConditionFactory {
     }
 
     private List<String> getSplitByOrWrapper(String condition) {
-        List<String> list = new ArrayList<>();
+        List<String> result = new ArrayList<>();
+        List<String> list;
         list = splitByOr(condition);
-        for (int i =0; i < list.size(); i++) {
-            String actual = list.get(i);
-            list.remove(actual);
-            list.addAll(splitByOr(actual));
+
+        while (list.size() > 1) {
+            result.add(list.get(1));
+            list = splitByOr(list.get(0));
         }
-        Collections.reverse(list);
-        return list;
+        result.add(list.get(0));
+
+        return result;
     }
 
     private List<List<Condition>> getConditions(List<List<String>> stringConditions) {
