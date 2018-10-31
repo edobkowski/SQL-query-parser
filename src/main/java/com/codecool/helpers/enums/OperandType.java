@@ -1,8 +1,8 @@
-package com.codecool.helpers;
+package com.codecool.helpers.enums;
 
 import com.codecool.exceptions.IncorrectOperandException;
 
-public enum OperandEnum {
+public enum OperandType {
 
     EQUALS("="),
     GREATER_THAN(">"),
@@ -14,9 +14,11 @@ public enum OperandEnum {
 
     private String value;
 
-    OperandEnum(String value) {}
+    OperandType(String value) {
+        this.value = value;
+    }
 
-    public static OperandEnum getType(String value) throws IncorrectOperandException {
+    public static OperandType getType(String value) throws IncorrectOperandException {
         switch (value) {
             case "=": {
                 return EQUALS;
