@@ -26,4 +26,9 @@ public class Condition {
     public String getRight() {
         return right;
     }
+
+    @Override
+    public String toString() {
+        return left + " " + operator + " " + right;
+    }
 }
