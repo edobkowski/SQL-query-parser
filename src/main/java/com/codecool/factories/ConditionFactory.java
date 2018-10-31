@@ -71,4 +71,16 @@ public class ConditionFactory {
         return newCondition;
     }
 
+    private List<String> getSplitByOrWrapper(String condition) {
+        List<String> list = new ArrayList<>();
+        list = splitByOr(condition);
+        for (int i =0; i < list.size(); i++) {
+            String actual = list.get(i);
+            list.remove(actual);
+            list.addAll(splitByOr(actual));
+        }
+        Collections.reverse(list);
+        return list;
+    }
+
 }
