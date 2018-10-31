@@ -15,7 +15,7 @@ public class PredicateFactory
 {
     private Map<String, Integer> columns = new HashMap<>();
 
-    PredicateFactory(String header) {
+    public PredicateFactory(String header) {
         String[] columnNames = header.split("\\s*,\\s*");
         int i = 0;
 
