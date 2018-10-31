@@ -114,4 +114,13 @@ public class ConditionFactory {
         return list;
     }
 
+    public List<List<Condition>> getConditionList(String condition) {
+        return Stream.of(condition)
+                .map(s -> getQuotesAndTrim(s))
+                .map(string -> getSplitByOrWrapper(string))
+                .map(x -> getConditionsAsString(x))
+                .map(x -> getConditions(x))
+                .flatMap(Collection::stream)
+                .collect(toList());
+    }
 }
