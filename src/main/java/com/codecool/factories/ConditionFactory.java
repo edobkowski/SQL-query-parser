@@ -83,4 +83,35 @@ public class ConditionFactory {
         return list;
     }
 
+    private List<List<Condition>> getConditions(List<List<String>> stringConditions) {
+        List<List<Condition>> list = new ArrayList<>();
+        String patternString = "(\\w+)[ ]?(<|>|<>|={1,2})[ ]?('\\w+'|\\w+)|(\\w+)[ ](LIKE|like){1}[ ]'([%]?\\w+[%]?)'";
+        Pattern pattern = Pattern.compile(patternString);
+
+        for (int x = 0; x < stringConditions.size(); x ++) {
+            List<Condition> innerList = new ArrayList<>();
+            for (int z = 0; z < stringConditions.get(x).size(); z++) {
+                String conditionString = stringConditions.get(x).get(z);
+                Matcher matcher = pattern.matcher(conditionString);
+
+                if (matcher.matches()) {
+
+                    for (int i = 1; i <= matcher.groupCount(); i++) {
+                        if(matcher.group(i)==null) continue;
+                        try {
+                            innerList.add(new Condition(matcher.group(i), matcher.group(i+1), matcher.group(i+2)));
+                        }
+                        catch (IncorrectOperandException e) {
+                            break;
+                        }
+                        break;
+                    }
+                }
+            }
+            list.add(innerList);
+
+        }
+        return list;
+    }
+
 }
