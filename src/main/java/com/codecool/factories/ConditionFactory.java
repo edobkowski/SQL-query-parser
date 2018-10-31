@@ -62,7 +62,6 @@ public class ConditionFactory {
             stringTrim = matcher.group();
             stringTrim = stringTrim.replaceAll("'","");
             stringTrim = stringTrim.trim();
-            stringTrim = "'" + stringTrim + "'";
             newCondition = newCondition.replace(toReplace, stringTrim);
         }
         return newCondition;
