@@ -33,5 +33,22 @@ public class ConditionFactory {
         return list;
     }
 
+    private List<List<String>> getConditionsAsString(List<String> conditions) {
+        List<List<String>> list = new ArrayList<>();
+        String patternString = "(\\w+)[ ]?(<|>|<>|={1,2})[ ]?('\\w+'|\\w+)|(\\w+)[ ](LIKE|like){1}[ ]'([%]?\\w+[%]?)'";
+        Pattern pattern = Pattern.compile(patternString);
+
+        for (int x = 0; x < conditions.size(); x ++) {
+            List<String> innerList = new ArrayList<>();
+            String condition = conditions.get(x);
+            Matcher matcher = pattern.matcher(condition);
+
+            while (matcher.find()) {
+                innerList.add(matcher.group());
+            }
+            list.add(innerList);
+        }
+        return list;
+    }
 
 }
