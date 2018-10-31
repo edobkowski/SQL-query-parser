@@ -51,4 +51,24 @@ public class ConditionFactory {
         return list;
     }
 
+    private String getQuotesAndTrim(String condition) {
+        String patternString = "('.*?'|$)";
+        Pattern pattern = Pattern.compile(patternString);
+        Matcher matcher = pattern.matcher(condition);
+        String toReplace;
+        String stringTrim;
+        String newCondition = condition;
+
+        while (matcher.find()) {
+            if (matcher.group().equals("")) continue;
+            toReplace = matcher.group();
+            stringTrim = matcher.group();
+            stringTrim = stringTrim.replaceAll("'","");
+            stringTrim = stringTrim.trim();
+            stringTrim = "'" + stringTrim + "'";
+            newCondition = newCondition.replace(toReplace, stringTrim);
+        }
+        return newCondition;
+    }
+
 }
