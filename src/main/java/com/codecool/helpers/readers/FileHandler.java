@@ -1,31 +1,43 @@
-package com.codecool;
+package com.codecool.helpers.readers;
 
-import com.codecool.exceptions.FileHandlerException;
+import com.codecool.exceptions.DataReaderException;
+import com.codecool.predicates.LessPredicate;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Stream;
 
-public class FileHandler {
+public class FileHandler implements DataReader {
 
-    public String getHeader(String fileName) throws FileHandlerException {
-        try (Stream<String> stream = Files.lines(Paths.get(fileName))){
+    private String fileName;
 
-            return stream.findFirst().get();
-        }
-        catch (IOException e) {
-            throw new FileHandlerException("Cannot read file " + fileName);
-        }
-
+    public FileHandler(String fileName) {
+        this.fileName = fileName;
     }
 
-    public Stream<String> getDataStream(String fileName) throws FileHandlerException {
+    @Override
+    public List<String> getHeader() throws DataReaderException {
+        try (Stream<String> stream = Files.lines(Paths.get(fileName))){
+            return Arrays.asList(stream
+                            .findFirst()
+                            .get()
+                            .split("\\s*,\\s*"));
+        }
+        catch (IOException e) {
+            throw new DataReaderException("Cannot read file " + fileName);
+        }
+    }
+
+    @Override
+    public Stream<String> getDataStream() throws DataReaderException {
         try {
             return Files.lines(Paths.get(fileName)).skip(1);
         }
         catch (IOException e) {
-            throw new FileHandlerException("Cannot read file " + fileName);
+            throw new DataReaderException("Cannot read file " + fileName);
         }
     }
 }
