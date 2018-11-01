@@ -1,7 +1,7 @@
 package com.codecool.exceptions;
 
-public class FileHandlerException extends Exception {
-    public FileHandlerException(String message) {
+public class DataReaderException extends Exception {
+    public DataReaderException(String message) {
         super(message);
     }
 }
