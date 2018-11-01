@@ -1,7 +1,7 @@
 package com.codecool.predicates;
 
-import com.codecool.FileHandler;
-import com.codecool.exceptions.FileHandlerException;
+import com.codecool.helpers.readers.FileHandler;
+import com.codecool.exceptions.DataReaderException;
 import com.codecool.exceptions.IncorrectOperandException;
 import com.codecool.exceptions.IncorrectQueryException;
 import com.codecool.models.Condition;
@@ -26,11 +26,11 @@ public class PredicateFactoryTest {
     Stream<String> data;
 
     @BeforeEach
-    void init() throws FileHandlerException {
+    void init() throws DataReaderException {
         String fileName = "src/main/resources/testFile.csv";
-        FileHandler fileHandler = new FileHandler();
-        String header = fileHandler.getHeader(fileName);
-        this.data = fileHandler.getDataStream(fileName);
+        FileHandler fileHandler = new FileHandler(fileName);
+        List<String> header = fileHandler.getHeader();
+        this.data = fileHandler.getDataStream();
         this.predicateFactory = new PredicateFactory(header);
     }
 
