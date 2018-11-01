@@ -1,8 +1,9 @@
 package com.codecool.controllers;
 
-import com.codecool.exceptions.FileHandlerException;
+import com.codecool.exceptions.DataReaderException;
 import com.codecool.exceptions.IncorrectQueryException;
 import com.codecool.factories.ConditionFactory;
+import com.codecool.helpers.readers.FileHandler;
 import com.codecool.models.Condition;
 import com.codecool.predicates.PredicateFactory;
 import org.springframework.boot.SpringApplication;
@@ -38,7 +39,7 @@ public class MainController {
     }
 
     @PostMapping("/")
-    public String handlePost(Model model, @RequestParam("stringQuery") String stringQuery) throws IncorrectQueryException, FileHandlerException {
+    public String handlePost(Model model, @RequestParam("stringQuery") String stringQuery) throws IncorrectQueryException, DataReaderException {
         init();
         List<List<Condition>> conditions = this.conditionFactory.getConditionList(stringQuery);
         Predicate<String> predicate = this.predicateFactory.getPredicate(conditions);
@@ -48,11 +49,11 @@ public class MainController {
         return "index";
     }
 
-    private void init() throws FileHandlerException {
+    private void init() throws DataReaderException {
         String fileName = "src/main/resources/testFile.csv";
-        com.codecool.FileHandler fileHandler = new com.codecool.FileHandler();
-        String header = fileHandler.getHeader(fileName);
-        this.data = fileHandler.getDataStream(fileName);
+        FileHandler fileHandler = new FileHandler(fileName);
+        List<String> header = fileHandler.getHeader();
+        this.data = fileHandler.getDataStream();
         this.predicateFactory = new PredicateFactory(header);
         this.conditionFactory = new ConditionFactory();
     }
