@@ -3,7 +3,8 @@ package com.codecool.controllers;
 import com.codecool.exceptions.DataReaderException;
 import com.codecool.exceptions.IncorrectQueryException;
 import com.codecool.factories.ConditionFactory;
-import com.codecool.helpers.readers.FileHandler;
+import com.codecool.helpers.readers.DataReader;
+import com.codecool.helpers.readers.GoogleSheetReader;
 import com.codecool.models.Condition;
 import com.codecool.predicates.PredicateFactory;
 import org.springframework.boot.SpringApplication;
@@ -26,8 +27,10 @@ public class MainController {
     private PredicateFactory predicateFactory;
     private Stream<String> data;
     private ConditionFactory conditionFactory;
+    private static DataReader reader;
 
     public static void main(String[] args) throws Exception {
+        reader = new GoogleSheetReader();
         SpringApplication.run(MainController.class, args);
     }
 
@@ -50,10 +53,8 @@ public class MainController {
     }
 
     private void init() throws DataReaderException {
-        String fileName = "src/main/resources/testFile.csv";
-        FileHandler fileHandler = new FileHandler(fileName);
-        List<String> header = fileHandler.getHeader();
-        this.data = fileHandler.getDataStream();
+        List<String> header = reader.getHeader();
+        this.data = reader.getDataStream();
         this.predicateFactory = new PredicateFactory(header);
         this.conditionFactory = new ConditionFactory();
     }
