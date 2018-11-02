@@ -2,11 +2,8 @@ package com.codecool.controllers;
 
 import com.codecool.exceptions.DataReaderException;
 import com.codecool.exceptions.IncorrectQueryException;
-import com.codecool.factories.ConditionFactory;
-import com.codecool.helpers.readers.DataReader;
-import com.codecool.helpers.readers.GoogleSheetReader;
-import com.codecool.models.Condition;
-import com.codecool.predicates.PredicateFactory;
+import com.codecool.factories.QueryFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Controller;
@@ -16,21 +13,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Controller
 @SpringBootApplication
 public class MainController {
 
-    private PredicateFactory predicateFactory;
-    private Stream<String> data;
-    private ConditionFactory conditionFactory;
-    private static DataReader reader;
+    @Autowired
+    private QueryHandler queryHandler;
 
     public static void main(String[] args) throws Exception {
-        reader = new GoogleSheetReader();
         SpringApplication.run(MainController.class, args);
     }
 
@@ -43,19 +34,9 @@ public class MainController {
 
     @PostMapping("/")
     public String handlePost(Model model, @RequestParam("stringQuery") String stringQuery) throws IncorrectQueryException, DataReaderException {
-        init();
-        List<List<Condition>> conditions = this.conditionFactory.getConditionList(stringQuery);
-        Predicate<String> predicate = this.predicateFactory.getPredicate(conditions);
-        List<String> resultSet = this.data.filter(predicate).collect(Collectors.toList());
+        List<String> resultSet = this.queryHandler.executeQuery(stringQuery);
         model.addAttribute("records", resultSet);
 
         return "index";
-    }
-
-    private void init() throws DataReaderException {
-        List<String> header = reader.getHeader();
-        this.data = reader.getDataStream();
-        this.predicateFactory = new PredicateFactory(header);
-        this.conditionFactory = new ConditionFactory();
     }
 }
