@@ -4,7 +4,7 @@ import com.codecool.exceptions.DataReaderException;
 import com.codecool.exceptions.IncorrectOperandException;
 import com.codecool.exceptions.IncorrectQueryException;
 import com.codecool.factories.ConditionFactory;
-import com.codecool.helpers.readers.FileHandler;
+import com.codecool.helpers.readers.FileReader;
 import com.codecool.models.Condition;
 import com.codecool.predicates.PredicateFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,9 +29,9 @@ public class IntegrationTest {
     @BeforeEach
     void init() throws DataReaderException {
         String fileName = "src/main/resources/testFile.csv";
-        FileHandler fileHandler = new FileHandler(fileName);
-        List<String> header = fileHandler.getHeader();
-        this.data = fileHandler.getDataStream();
+        FileReader fileReader = new FileReader(fileName);
+        List<String> header = fileReader.getHeader();
+        this.data = fileReader.getDataStream();
         this.predicateFactory = new PredicateFactory(header);
         this.conditionFactory = new ConditionFactory();
     }

@@ -10,11 +10,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class FileHandler implements DataReader {
+public class FileReader implements DataReader {
 
     private String fileName;
 
-    public FileHandler(String fileName) {
+    public FileReader(String fileName) {
         this.fileName = fileName;
     }
 
