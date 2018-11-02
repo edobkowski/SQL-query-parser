@@ -15,11 +15,9 @@ public class PredicateFactory
 {
     private Map<String, Integer> columns = new HashMap<>();
 
-    public PredicateFactory(String header) {
-        String[] columnNames = header.split("\\s*,\\s*");
+    public PredicateFactory(List<String> header) {
         int i = 0;
-
-        for (String column : columnNames) {
+        for (String column : header) {
             this.columns.put(column, i++);
         }
     }
@@ -29,7 +27,7 @@ public class PredicateFactory
 
         for(List<Condition> conditionList : conditions) {
             orConditions.add(chainPredicatesWithAnd(conditionList.stream()
-                    .map(condition -> getPredicateForCondition(condition))
+                    .map(this::getPredicateForCondition)
                     .collect(Collectors.toList())));
         }
 

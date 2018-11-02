@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+	    <title>SQL Query Parser</title>
+	    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	    <link rel="stylesheet" type="text/css" href="/stylesheets/main.css" />
+	    <link rel="stylesheet" type="text/css" href="../public/stylesheets/main.css" />
+	</head>
+
+	<body>
+		<div class="container centered">
+			<header>
+		 		<h1>SQL Query Parser</h1>
+			</header>
+		 	<hr>
+
+		 	<div class="query-field-section">
+		 		<form action="/" method="post">
+		 			<input class="query-field" type="text" name="stringQuery" />
+		 			<input class="go-btn"  type="submit" value="GO">
+		 		</form>
+		 	</div>
+
+		 	<div class="results-section">
+		 		<h1>Database Output</h1>
+		 		<ul th:each="record : ${records}">
+		    		<li th:text="${record}"/>
+		 		</ul>
+		 	</div>
+		</div>
+	</body>
+</html>
