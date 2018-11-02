@@ -61,6 +61,7 @@ public class PredicateFactory
             case LESS_THEN: return new LessPredicate(columnNumber, rightOperand);
             case GREATER_OR_EQUALS: return new GreaterOrEqualsPredicate(columnNumber, rightOperand);
             case LESS_OR_EQUALS: return new LessOrEqualsPredicate(columnNumber, rightOperand);
+            case LIKE: return new LikePredicate(columnNumber, rightOperand);
             default: return null;
         }
     }
