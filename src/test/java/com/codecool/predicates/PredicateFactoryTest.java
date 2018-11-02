@@ -78,6 +78,39 @@ public class PredicateFactoryTest {
         });
     }
 
+    @Test
+    void getResultSet_LikeCondition() throws IncorrectQueryException, IncorrectOperandException {
+        List<List<Condition>> conditions = new ArrayList(Arrays.asList(new ArrayList(Arrays.asList(new Condition(
+                "name", "LIKE",
+                "%li%")))));
+
+        Predicate<String> predicate = this.predicateFactory.getPredicate(conditions);
+        List<String> expectedResult = new ArrayList<>(Arrays.asList("Eliza, Pistacjowa, 30, F",
+                "Eliza, Laskowa, 30, F", "Filip, Brzozowski, 8, M"));
+        List<String> actualResult = data.filter(predicate).collect(Collectors.toList());
+
+        assertAll(() -> {
+            assertTrue(expectedResult.containsAll(actualResult));
+            assertTrue(actualResult.containsAll(expectedResult));
+        });
+    }
+
+    @Test
+    void getResultSet_LikeCondition2() throws IncorrectQueryException, IncorrectOperandException {
+        List<List<Condition>> conditions = new ArrayList(Arrays.asList(new ArrayList(Arrays.asList(new Condition(
+                "name", "like",
+                "__li%")))));
+
+        Predicate<String> predicate = this.predicateFactory.getPredicate(conditions);
+        List<String> expectedResult = new ArrayList<>(Arrays.asList("Filip, Brzozowski, 8, M"));
+        List<String> actualResult = data.filter(predicate).collect(Collectors.toList());
+
+        assertAll(() -> {
+            assertTrue(expectedResult.containsAll(actualResult));
+            assertTrue(actualResult.containsAll(expectedResult));
+        });
+    }
+
     private List<List<Condition>> getCond1() throws IncorrectOperandException {
         List<Condition> group1 = new ArrayList<>(Arrays.asList(
                 new Condition("age", ">", "35"),
