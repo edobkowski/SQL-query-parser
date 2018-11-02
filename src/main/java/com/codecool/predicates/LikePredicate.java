@@ -25,4 +25,15 @@ public class LikePredicate implements Predicate<String> {
         return Pattern.compile(sb.toString());
     }
 
+    @Override
+    public boolean test(String s) {
+        String[] elements = s.split("\\s*,\\s*");
+        String value = elements[columnNumber].trim();
+
+        Pattern pattern = buildRegex();
+        Matcher matcher = pattern.matcher(value);
+
+        if (matcher.matches()) return true;
+        return false;
+    }
 }
