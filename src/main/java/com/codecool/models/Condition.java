@@ -3,6 +3,8 @@ package com.codecool.models;
 import com.codecool.exceptions.IncorrectOperandException;
 import com.codecool.helpers.enums.OperandType;
 
+import java.util.Objects;
+
 public class Condition {
 
     private String left;
@@ -30,5 +32,20 @@ public class Condition {
     @Override
     public String toString() {
         return left + " " + operator.getValue() + " " + right;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Condition condition = (Condition) o;
+        return Objects.equals(left, condition.left) &&
+                operator == condition.operator &&
+                Objects.equals(right, condition.right);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(left, operator, right);
     }
 }
