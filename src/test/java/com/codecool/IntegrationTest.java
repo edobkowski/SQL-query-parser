@@ -29,7 +29,8 @@ public class IntegrationTest {
     @BeforeEach
     void init() throws DataReaderException {
         String fileName = "src/main/resources/testFile.csv";
-        FileReader fileReader = new FileReader(fileName);
+        FileReader fileReader = new FileReader();
+        fileReader.setSource(fileName);
         List<String> header = fileReader.getHeader();
         this.data = fileReader.getDataStream();
         this.predicateFactory = new PredicateFactory(header);
@@ -44,11 +45,6 @@ public class IntegrationTest {
         List<String> expectedResult = new ArrayList<>(Arrays.asList("Stanisław, Lagunowski, 40, M",
                 "Tomasz, Pies, 54, M", "Filip, Brzozowski, 8, M"));
         List<String> actualResult = data.filter(predicate).collect(Collectors.toList());
-
-        actualResult.forEach(System.out::println);
-        for(List<Condition> list : conditions) {
-            list.forEach(System.out::println);
-        }
 
         assertAll(() -> {
             assertTrue(expectedResult.containsAll(actualResult));

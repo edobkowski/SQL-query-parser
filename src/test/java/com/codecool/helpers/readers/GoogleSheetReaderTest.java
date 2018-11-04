@@ -18,7 +18,8 @@ class GoogleSheetReaderTest {
 
     @BeforeAll
     static void init() throws DataReaderException {
-        googleSheetReader = new GoogleSheetReader("Arkusz1");
+        googleSheetReader = new GoogleSheetReader();
+        googleSheetReader.setSource("Arkusz1");
     }
 
     @Test
