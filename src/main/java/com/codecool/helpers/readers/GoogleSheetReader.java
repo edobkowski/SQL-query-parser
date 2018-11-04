@@ -17,8 +17,11 @@ public class GoogleSheetReader implements DataReader {
     private static final String SPREADSHEET_ID = "1B2s_Wv4t85yenqO9pnG-BlBrRI2O4VLMkpQFmfYko68";
     private static Sheets sheetsService;
     private static ValueRange valueRange;
+    private String sheetName;
 
-    public GoogleSheetReader() throws DataReaderException {
+    public GoogleSheetReader(String sheetName) throws DataReaderException {
+        this.sheetName = sheetName;
+
         try {
             sheetsService = SheetsServiceUtil.getSheetsService();
             valueRange = initValueRange();
@@ -50,7 +53,7 @@ public class GoogleSheetReader implements DataReader {
     private ValueRange initValueRange() throws IOException {
         return sheetsService.spreadsheets().values()
                 .batchGet(SPREADSHEET_ID)
-                .setRanges(Arrays.asList("Arkusz1"))
+                .setRanges(Arrays.asList(sheetName))
                 .execute()
                 .getValueRanges()
                 .get(0);
