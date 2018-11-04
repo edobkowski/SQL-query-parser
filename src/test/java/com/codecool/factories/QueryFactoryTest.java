@@ -8,19 +8,17 @@ import com.codecool.models.Query;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class QueryFactoryTest {
 
-    private ConditionFactory conditionFactory = new ConditionFactory();
     private QueryFactory queryFactory;
 
     @BeforeEach
     void prepareTest() {
-        this.queryFactory = new QueryFactory(conditionFactory);
+        this.queryFactory = new QueryFactory();
     }
 
     @Test

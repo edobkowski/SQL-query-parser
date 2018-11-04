@@ -18,7 +18,7 @@ class GoogleSheetReaderTest {
 
     @BeforeAll
     static void init() throws DataReaderException {
-        googleSheetReader = new GoogleSheetReader();
+        googleSheetReader = new GoogleSheetReader("Arkusz1");
     }
 
     @Test
