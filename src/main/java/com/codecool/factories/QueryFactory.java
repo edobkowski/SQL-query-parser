@@ -3,6 +3,8 @@ package com.codecool.factories;
 import com.codecool.exceptions.IncorrectQueryException;
 import com.codecool.helpers.enums.QueryType;
 import com.codecool.models.Query;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,13 +13,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+@Component
 public class QueryFactory {
 
+    @Autowired
     private ConditionFactory conditionFactory;
 
-    public QueryFactory(ConditionFactory conditionFactory) {
-        this.conditionFactory = conditionFactory;
-    }
+//    public QueryFactory(ConditionFactory conditionFactory) {
+//        this.conditionFactory = conditionFactory;
+//    }
 
     public Query createQuery(String queryString) throws IncorrectQueryException {
         String patternString = "(select|SELECT|update|UPDATE|delete|DELETE|insert|INSERT)([\\w *\\.,]+)(?:[^']FROM[^']|[^']from[^'])(\\w+)(?:[^']WHERE[^']|[^']where[^'])?([\\w <>='%]+)?;";

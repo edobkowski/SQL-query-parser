@@ -2,6 +2,7 @@ package com.codecool.factories;
 
 import com.codecool.exceptions.IncorrectOperandException;
 import com.codecool.models.Condition;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -10,6 +11,7 @@ import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 
+@Component
 public class ConditionFactory {
 
     private List<String> splitByOr(String condition) {
