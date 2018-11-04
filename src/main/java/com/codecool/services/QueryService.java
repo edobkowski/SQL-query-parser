@@ -31,6 +31,10 @@ public class QueryService {
         return data.filter(predicate).collect(Collectors.toList());
     }
 
+    public boolean dataReaderNotSet() {
+        return this.dataReader == null;
+    }
+
     public void setDataReader(DataReader dataReader) {
         this.dataReader = dataReader;
     }
