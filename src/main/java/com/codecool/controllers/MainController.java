@@ -1,6 +1,7 @@
 package com.codecool.controllers;
 
 import com.codecool.exceptions.DataReaderException;
+import com.codecool.exceptions.DataReaderUnavailableException;
 import com.codecool.exceptions.IncorrectQueryException;
 import com.codecool.google.GoogleAuthorizeUtil;
 import com.codecool.helpers.readers.FileReader;
@@ -32,7 +33,10 @@ public class MainController {
 
     @PostMapping("/result")
     public String handlePost(Model model, @RequestParam("stringQuery") String stringQuery) throws IncorrectQueryException,
-            DataReaderException {
+            DataReaderException, DataReaderUnavailableException {
+        if (this.queryService.dataReaderNotSet()) {
+            throw new DataReaderUnavailableException("Data source not set");
+        }
         List<String> resultSet = this.queryService.executeQuery(stringQuery);
         model.addAttribute("records", resultSet);
 
@@ -47,6 +51,8 @@ public class MainController {
             this.queryService.setDataReader(new GoogleSheetReader());
         } else if(source.equalsIgnoreCase("csv")) {
             this.queryService.setDataReader(new FileReader());
+        } else {
+            throw new IllegalArgumentException("Wrong data source: " + source);
         }
 
         return "index";
