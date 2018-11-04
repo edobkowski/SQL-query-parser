@@ -10,18 +10,13 @@ import java.security.GeneralSecurityException;
 
 public class SheetsServiceUtil {
     private static final String APPLICATION_NAME = "SQL QUERY PARSER";
-    private static Sheets service;
 
     public static Sheets getSheetsService() throws IOException, GeneralSecurityException {
-        if(service == null) {
             Credential credential = GoogleAuthorizeUtil.authorize();
-            service = new Sheets.Builder(
+            return new Sheets.Builder(
                     GoogleNetHttpTransport.newTrustedTransport(),
                     JacksonFactory.getDefaultInstance(), credential)
                     .setApplicationName(APPLICATION_NAME)
                     .build();
-        }
-
-        return service;
     }
 }

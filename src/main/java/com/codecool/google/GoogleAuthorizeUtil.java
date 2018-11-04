@@ -18,13 +18,18 @@ import java.util.Arrays;
 import java.util.List;
 
 public class GoogleAuthorizeUtil {
+
+    private static Credential credential;
+
     public static Credential authorize() throws IOException, GeneralSecurityException {
-        InputStream in = GoogleAuthorizeUtil.class.getResourceAsStream("/credentials.json");
-        GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JacksonFactory.getDefaultInstance(), new InputStreamReader(in));
-        List<String> scopes = Arrays.asList(SheetsScopes.SPREADSHEETS);
-        GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(GoogleNetHttpTransport.newTrustedTransport(), JacksonFactory.getDefaultInstance(), clientSecrets, scopes).setDataStoreFactory(new MemoryDataStoreFactory())
-                .setAccessType("offline").build();
-        Credential credential = new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("72994257151-t0mbjqlok3n05f62teeno55vvjt5at6f.apps.googleusercontent.com");
+        if(credential == null) {
+            InputStream in = GoogleAuthorizeUtil.class.getResourceAsStream("/credentials.json");
+            GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JacksonFactory.getDefaultInstance(), new InputStreamReader(in));
+            List<String> scopes = Arrays.asList(SheetsScopes.SPREADSHEETS);
+            GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(GoogleNetHttpTransport.newTrustedTransport(), JacksonFactory.getDefaultInstance(), clientSecrets, scopes).setDataStoreFactory(new MemoryDataStoreFactory())
+                    .setAccessType("offline").build();
+            credential = new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("72994257151-t0mbjqlok3n05f62teeno55vvjt5at6f.apps.googleusercontent.com");
+        }
 
         return credential;
     }
