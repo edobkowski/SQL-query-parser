@@ -1,7 +1,6 @@
 package com.codecool.helpers.readers;
 
 import com.codecool.exceptions.DataReaderException;
-import com.codecool.predicates.LessPredicate;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -12,32 +11,34 @@ import java.util.stream.Stream;
 
 public class FileReader implements DataReader {
 
-    private String fileName;
+    private String source;
 
-    public FileReader(String fileName) {
-        this.fileName = fileName;
+    @Override
+    public void setSource(String source) {
+        this.source = "src/main/resources/" + source + ".csv";
+        System.out.println(source);
     }
 
     @Override
     public List<String> getHeader() throws DataReaderException {
-        try (Stream<String> stream = Files.lines(Paths.get(fileName))){
+        try (Stream<String> stream = Files.lines(Paths.get(source))){
             return Arrays.asList(stream
                             .findFirst()
                             .get()
                             .split("\\s*,\\s*"));
         }
         catch (IOException e) {
-            throw new DataReaderException("Cannot read file " + fileName);
+            throw new DataReaderException("Cannot read file " + source);
         }
     }
 
     @Override
     public Stream<String> getDataStream() throws DataReaderException {
         try {
-            return Files.lines(Paths.get(fileName)).skip(1);
+            return Files.lines(Paths.get(source)).skip(1);
         }
         catch (IOException e) {
-            throw new DataReaderException("Cannot read file " + fileName);
+            throw new DataReaderException("Cannot read file " + source);
         }
     }
 }

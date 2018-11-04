@@ -8,4 +8,5 @@ import java.util.stream.Stream;
 public interface DataReader {
     List<String> getHeader() throws DataReaderException;
     Stream<String> getDataStream() throws DataReaderException;
+    void setSource(String source) throws DataReaderException;
 }

@@ -17,15 +17,22 @@ public class GoogleSheetReader implements DataReader {
     private static final String SPREADSHEET_ID = "1B2s_Wv4t85yenqO9pnG-BlBrRI2O4VLMkpQFmfYko68";
     private static Sheets sheetsService;
     private static ValueRange valueRange;
-    private String sheetName;
+    private String source;
 
-    public GoogleSheetReader(String sheetName) throws DataReaderException {
-        this.sheetName = sheetName;
-
+    public GoogleSheetReader() throws DataReaderException {
         try {
             sheetsService = SheetsServiceUtil.getSheetsService();
-            valueRange = initValueRange();
         } catch (IOException | GeneralSecurityException e) {
+            throw new DataReaderException("Cannot get header: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void setSource(String source) throws DataReaderException {
+        this.source = source;
+        try {
+            valueRange = initValueRange();
+        } catch (IOException e) {
             throw new DataReaderException("Cannot get header: " + e.getMessage());
         }
     }
@@ -53,7 +60,7 @@ public class GoogleSheetReader implements DataReader {
     private ValueRange initValueRange() throws IOException {
         return sheetsService.spreadsheets().values()
                 .batchGet(SPREADSHEET_ID)
-                .setRanges(Arrays.asList(sheetName))
+                .setRanges(Arrays.asList(source))
                 .execute()
                 .getValueRanges()
                 .get(0);
