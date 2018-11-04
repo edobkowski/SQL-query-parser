@@ -13,10 +13,14 @@
 		 		<h1>SQL Query Parser</h1>
 			</header>
 		 	<hr>
+		 	<form action="/" method="post">
+                <input type="submit" name="source" value="sheets">
+                <input type="submit" name="source" value="csv">
+            </form>
 
 		 	<div class="query-field-section">
-		 		<form action="/" method="post">
-		 			<input class="query-field" type="text" name="stringQuery" />
+		 		<form action="/result" method="post">
+		 			<input class="query-field" type="text" name="stringQuery">
 		 			<input class="go-btn"  type="submit" value="GO">
 		 		</form>
 		 	</div>
