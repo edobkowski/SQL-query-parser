@@ -10,7 +10,8 @@ public enum OperandType {
     GREATER_OR_EQUALS(">="),
     LESS_OR_EQUALS("<="),
     NOT_EQUAL("<>"),
-    LIKE("LIKE");
+    LIKE("LIKE"),
+    SUM("SUM");
 
     private String value;
 
@@ -43,6 +44,12 @@ public enum OperandType {
             }
             case "like": {
                 return LIKE;
+            }
+            case "SUM": {
+                return SUM;
+            }
+            case "sum": {
+                return SUM;
             }
             default: throw new IncorrectOperandException("Incorrect operand exception");
         }

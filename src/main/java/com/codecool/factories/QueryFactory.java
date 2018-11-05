@@ -19,12 +19,12 @@ public class QueryFactory {
     @Autowired
     private ConditionFactory conditionFactory;
 
-//    public QueryFactory(ConditionFactory conditionFactory) {
-//        this.conditionFactory = conditionFactory;
-//    }
+    public QueryFactory(ConditionFactory conditionFactory) {
+        this.conditionFactory = conditionFactory;
+    }
 
     public Query createQuery(String queryString) throws IncorrectQueryException {
-        String patternString = "(select|SELECT|update|UPDATE|delete|DELETE|insert|INSERT)([\\w *\\.,]+)(?:[^']FROM[^']|[^']from[^'])(\\w+)(?:[^']WHERE[^']|[^']where[^'])?([\\w <>='%]+)?;";
+        String patternString = "(select|SELECT|update|UPDATE|delete|DELETE|insert|INSERT)([\\w *\\.,\\(\\)]+)(?:[^']FROM[^']|[^']from[^'])([\\w\\.]+)(?:[^']WHERE[^']|[^']where[^'])?([\\w <>='%]+)?;";
         Pattern pattern = Pattern.compile(patternString);
         Matcher matcher = pattern.matcher(queryString);
 
@@ -33,13 +33,21 @@ public class QueryFactory {
             for (int i = 1; i <= matcher.groupCount(); i++) {
                 list.add(matcher.group(i));
             }
-            Query query = new Query(QueryType.getQueryType(list.get(0).trim()),
+            Query query;
+            if (list.get(3) != null) query = new Query(QueryType.getQueryType(list.get(0).trim()),
                     Arrays.asList(list.get(1).trim().split(","))
                             .stream()
-                            .map(x -> x.trim())
+                            .map(x -> x.replace(" ", ""))
                             .collect(Collectors.toList()),
                     list.get(2),
                     conditionFactory.getConditionList(list.get(3)));
+            else query = new Query(QueryType.getQueryType(list.get(0).trim()),
+                    Arrays.asList(list.get(1).trim().split(","))
+                            .stream()
+                            .map(x -> x.replace(" ", ""))
+                            .collect(Collectors.toList()),
+                    list.get(2),
+                    new ArrayList<>());
             return query;
         }
         throw new IncorrectQueryException("Incorrect query");

@@ -6,13 +6,11 @@ import com.codecool.exceptions.IncorrectQueryException;
 import com.codecool.factories.ConditionFactory;
 import com.codecool.helpers.readers.FileReader;
 import com.codecool.models.Condition;
-import com.codecool.predicates.PredicateFactory;
+import com.codecool.factories.PredicateFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -25,15 +23,18 @@ public class IntegrationTest {
     private PredicateFactory predicateFactory;
     private Stream<String> data;
     private ConditionFactory conditionFactory;
+    private Map<String, Integer> mappedColumns = new HashMap<>();
+
 
     @BeforeEach
     void init() throws DataReaderException {
-        String fileName = "src/main/resources/testFile.csv";
+        String fileName = "testFile";
         FileReader fileReader = new FileReader();
         fileReader.setSource(fileName);
         List<String> header = fileReader.getHeader();
+        getMap(header);
         this.data = fileReader.getDataStream();
-        this.predicateFactory = new PredicateFactory(header);
+        this.predicateFactory = new PredicateFactory(this.mappedColumns);
         this.conditionFactory = new ConditionFactory();
     }
 
@@ -50,5 +51,12 @@ public class IntegrationTest {
             assertTrue(expectedResult.containsAll(actualResult));
             assertTrue(actualResult.containsAll(expectedResult));
         });
+    }
+
+    private void getMap(List<String> header) {
+        int i = 0;
+        for (String column : header) {
+            this.mappedColumns.put(column, i++);
+        }
     }
 }
