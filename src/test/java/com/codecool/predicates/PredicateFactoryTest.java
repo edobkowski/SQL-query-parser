@@ -28,12 +28,13 @@ public class PredicateFactoryTest {
 
     @BeforeEach
     void init() throws DataReaderException {
-        String fileName = "src/main/resources/testFile.csv";
+        String fileName = "testFile";
         FileReader fileReader = new FileReader();
         fileReader.setSource(fileName);
         List<String> header = fileReader.getHeader();
+        getMap(header);
         this.data = fileReader.getDataStream();
-        this.predicateFactory = new PredicateFactory(header);
+        this.predicateFactory = new PredicateFactory(this.mappedColumns);
     }
 
     @Test
