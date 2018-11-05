@@ -19,6 +19,10 @@ import java.util.List;
 
 public class GoogleAuthorizeUtil {
 
+    private GoogleAuthorizeUtil() {
+        
+    }
+
     private static Credential credential;
 
     public static Credential authorize() throws IOException, GeneralSecurityException {
