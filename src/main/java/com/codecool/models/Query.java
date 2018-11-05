@@ -66,7 +66,7 @@ public class Query {
     @Override
     public String toString() {
         String s = listOfConditions.stream().flatMap(Collection::stream).collect(Collectors.toList()).toString();
-        return queryType + (isAll ? " * " : columnList.stream().collect(Collectors.joining(", ", " ", " "))) + "FROM " + source + " WHERE "
+        return queryType + (isAll ? "*" : columnList.stream().collect(Collectors.joining(", ", " ", " "))) + "FROM " + source + (listOfConditions.isEmpty() ? "" : " WHERE ")
                 + (listOfConditions.isEmpty() ? ";" : s);
     }
 
