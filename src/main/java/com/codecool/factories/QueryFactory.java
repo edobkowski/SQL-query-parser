@@ -19,12 +19,12 @@ public class QueryFactory {
     @Autowired
     private ConditionFactory conditionFactory;
 
-//    public QueryFactory(ConditionFactory conditionFactory) {
-//        this.conditionFactory = conditionFactory;
-//    }
+    public QueryFactory(ConditionFactory conditionFactory) {
+        this.conditionFactory = conditionFactory;
+    }
 
     public Query createQuery(String queryString) throws IncorrectQueryException {
-        String patternString = "(select|SELECT|update|UPDATE|delete|DELETE|insert|INSERT)([\\w *\\.,]+)(?:[^']FROM[^']|[^']from[^'])(\\w+)(?:[^']WHERE[^']|[^']where[^'])?([\\w <>='%]+)?;";
+        String patternString = "(select|SELECT|update|UPDATE|delete|DELETE|insert|INSERT)([\\w *\\.,\\(\\)]+)(?:[^']FROM[^']|[^']from[^'])([\\w\\.]+)(?:[^']WHERE[^']|[^']where[^'])?([\\w <>='%]+)?;";
         Pattern pattern = Pattern.compile(patternString);
         Matcher matcher = pattern.matcher(queryString);
 
