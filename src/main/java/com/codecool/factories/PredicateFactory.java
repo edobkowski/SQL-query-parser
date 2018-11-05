@@ -1,8 +1,9 @@
-package com.codecool.predicates;
+package com.codecool.factories;
 
 
 import com.codecool.exceptions.IncorrectQueryException;
 import com.codecool.models.Condition;
+import com.codecool.predicates.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,13 +14,10 @@ import java.util.stream.Collectors;
 
 public class PredicateFactory
 {
-    private Map<String, Integer> columns = new HashMap<>();
+    private Map<String, Integer> columns;
 
-    public PredicateFactory(List<String> header) {
-        int i = 0;
-        for (String column : header) {
-            this.columns.put(column, i++);
-        }
+    public PredicateFactory(Map<String, Integer> columns) {
+        this.columns = columns;
     }
     public Predicate<String> getPredicate(List<List<Condition>> conditions) throws IncorrectQueryException {
 
