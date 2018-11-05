@@ -1,5 +1,6 @@
 package com.codecool.predicates;
 
+import com.codecool.factories.PredicateFactory;
 import com.codecool.helpers.readers.FileReader;
 import com.codecool.exceptions.DataReaderException;
 import com.codecool.exceptions.IncorrectOperandException;
@@ -10,9 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -24,6 +23,8 @@ public class PredicateFactoryTest {
 
     PredicateFactory predicateFactory;
     Stream<String> data;
+    private Map<String, Integer> mappedColumns = new HashMap<>();
+
 
     @BeforeEach
     void init() throws DataReaderException {
@@ -152,5 +153,12 @@ public class PredicateFactoryTest {
                 "Eliza, Pistacjowa, 30, F",
                 "Eliza, Laskowa, 30, F"
         ));
+    }
+
+    private void getMap(List<String> header) {
+        int i = 0;
+        for (String column : header) {
+            this.mappedColumns.put(column, i++);
+        }
     }
 }
