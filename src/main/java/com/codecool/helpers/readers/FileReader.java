@@ -15,8 +15,8 @@ public class FileReader implements DataReader {
 
     @Override
     public void setSource(String source) {
-        this.source = "src/main/resources/" + source + ".csv";
-        System.out.println(source);
+        if (source.contains(".csv")) this.source = "src/main/resources/" + source;
+        else this.source = "src/main/resources/" + source + ".csv";
     }
 
     @Override
