@@ -18,7 +18,7 @@ class QueryFactoryTest {
 
     @BeforeEach
     void prepareTest() {
-        this.queryFactory = new QueryFactory();
+        this.queryFactory = new QueryFactory(new ConditionFactory());
     }
 
     @Test
