@@ -12,7 +12,7 @@ import java.util.stream.Stream;
 import static java.util.stream.Collectors.toList;
 
 @Component
-public class  ConditionFactory {
+public class ConditionFactory {
 
     private List<String> splitByOr(String condition) {
         List<String> list = new ArrayList<>();
